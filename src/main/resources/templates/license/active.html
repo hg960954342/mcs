@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head th:include="commons/common::head">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">注册激活</div>
+                <div class="layui-card-body" pad15>
+                    <div class="layui-form" lay-filter="license-form">
+                        <div class="layui-form-item">
+                        <label class="layui-form-label">项目名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly class="layui-input" th:value="${projectName}">
+                        </div>
+                    </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">系统日期</label>
+                            <div class="layui-input-inline">
+                                <input type="text" readonly class="layui-input" th:value="${sysDate}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">机器码</label>
+                            <div class="layui-input-block">
+                                <textarea readonly class="layui-textarea" th:text="${activeCode}"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">激活码</label>
+                            <div class="layui-input-block">
+                                <textarea name="key" class="layui-textarea" lay-verify="required"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="setmyinfo">激活</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , form = layui.form;
+
+        form.render(null, 'license-form');
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(setmyinfo)', function (data) {
+            $.ajax({
+                url: "/license/active",
+                data: data.field,
+                type: "post",
+                success: function (data) {
+                    if (data == "ok") {
+                        layer.alert("激活成功！", {
+                            icon: 6,
+                            yes: function () {
+                                location.href = '/license/';
+                            }
+                        });
+                    } else
+                        layer.alert("您输入的激活码有误，激活失败！", {icon: 5});
+                },
+                error: function (err) {	//失败回调函数
+                    layer.alert(err, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

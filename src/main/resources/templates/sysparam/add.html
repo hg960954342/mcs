@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head th:include="commons/common::head">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header" th:text="${Info==null}?'添加系统参数':'编辑系统参数'"></div>
+                <div class="layui-card-body" pad15>
+
+                    <input type="hidden" id="_method" value="" th:value="${Info==null}?'post':'put'">
+                    <div class="layui-form" lay-filter="sysparam-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">代码</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="code" value="" placeholder="请输入代码" th:readonly="${Info!=null}"
+                                       th:value="${Info!=null}?${Info.getCode()}" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux" th:text="${Info==null}?'':'不可修改。'"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">值</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="value" value="" th:value="${Info!=null}?${Info.getValue()}"
+                                       lay-verify="required" autocomplete="off" placeholder="请输入值" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">说明</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" value="" th:value="${Info!=null}?${Info.getName()}"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="sort" value="" th:value="${Info!=null}?${Info.getSort()}"
+                                       lay-verify="number" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="setmyinfo"
+                                        th:text="${Info==null}?'确认添加':'确认修改'">确认修改
+                                </button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , form = layui.form;
+
+        form.render(null, 'sysparam-form');
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(setmyinfo)', function (data) {
+            $.ajax({
+                url: "/SysParams/",
+                type: $('#_method').val(),
+                data: data.field,
+                success: function (data) {
+                    layer.alert(data, {icon: 6});
+                },
+                error: function (err) {	//失败回调函数
+                    layer.alert(err, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

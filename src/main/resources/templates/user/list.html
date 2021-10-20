@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head th:include="commons/common::head">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">用户管理</div>
+                <div th:include="commons/common::data-table-admin"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../layuiadmin/layui/layui.js"></script>
+<script type="text/javascript" th:inline="none">
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function () {
+        var table = layui.table;
+
+        table.render({
+            id: 'UserInfoReload'
+            , elem: '#data-table'
+            , url: '/Users/Data'
+            , cols: [[
+                {field: 'role', title: '权限', width: 100, sort: true}
+                , {field: 'id', title: '帐号', width: 100, sort: true}
+                , {field: 'userName', title: '姓名', width: 100, sort: true}
+                , {field: 'sex', title: '性别', width: 80, sort: true}
+                , {field: 'telephone', title: '手机', width: 150, sort: true}
+                , {field: 'mail', title: '邮箱', width: 150, sort: true}
+                , {field: 'remark', title: '备注', minWidth: 100, sort: true}
+                , {width: 120, align: 'center', fixed: 'right', toolbar: '#table-operate'}
+            ]]
+            //,skin: 'line' //表格风格
+            , even: true
+            , page: true //是否显示分页
+            , limits: [10, 20]
+            , limit: 10 //每页默认显示的数量
+        });
+
+        //监听工具条
+        table.on('tool(data-table)', function (obj) {
+            var id = obj.data.uId;
+            var url = '/users/';
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    var admin = layui.admin;
+                    admin.req({
+                        type: 'DELETE',
+                        url: url + id,
+                        success: function (data) {
+                            var msg = data.msg;
+                            if (msg != "")
+                                layer.alert(msg);
+                            else {
+                                obj.del();
+                                layer.close(index);
+                            }
+                        }
+                    });
+                });
+            } else if (obj.event === 'edit') {
+                layer.open({
+                    title: '编辑数据'
+                    , type: 2
+                    , content: url + 'Edit/' + id
+                    , shadeClose: true
+                    , area: layui.admin.screen() < 2 ? ['100%', '80%'] : ['550px', '600px']
+                    , maxmin: true
+                    , end: function () {
+                        table.reload("UserInfoReload");
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

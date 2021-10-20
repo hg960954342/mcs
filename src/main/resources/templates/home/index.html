@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head th:include="commons/common::head">
+    <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css">
+    <link rel="stylesheet" href="../../layuiadmin/style/admin.css">
+</head>
+<script src="/webjars" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-row layui-col-space15">
+
+                <!--  快捷方式 - BCR  -->
+                <div class="layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">快捷方式 - BCR</div>
+                        <div class="layui-card-body">
+                            <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsBcrConnect/add">
+                                                <i class="layui-icon layui-icon-add-1"></i>
+                                                <cite>BCR连接添加</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsBcrConnect/">
+                                                <i class="layui-icon layui-icon-console"></i>
+                                                <cite>BCR连接管理</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsBcrProperties/adds">
+                                                <i class="layui-icon layui-icon-add-circle"></i>
+                                                <cite>BCR配置添加</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsBcrProperties/">
+                                                <i class="layui-icon layui-icon-console"></i>
+                                                <cite>BCR配置信息管理</cite>
+                                            </a>
+                                        </li>
+                                    </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  快捷方式 - MCS  -->
+                <div class="layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">快捷方式 - MCS</div>
+                        <div class="layui-card-body">
+                            <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsLog/">
+                                                <i class="layui-icon layui-icon-file-b"></i>
+                                                <cite>MCS数据日志</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsAlarmLog/">
+                                                <i class="layui-icon layui-icon-survey"></i>
+                                                <cite>MCS错误日志</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsInterfaceLog/">
+                                                <i class="layui-icon layui-icon-unlink"></i>
+                                                <cite>接口日志</cite>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  快捷方式 - PLC  -->
+                <div class="layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">快捷方式 - PLC</div>
+                        <div class="layui-card-body">
+                            <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsPlcConnect/adds">
+                                                <i class="layui-icon layui-icon-add-circle"></i>
+                                                <cite>PLC连接添加</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsPlcConnect/">
+                                                <i class="layui-icon layui-icon-chart"></i>
+                                                <cite>PLC连接管理</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsTaskLog/">
+                                                <i class="layui-icon layui-icon-list"></i>
+                                                <cite>PLC任务日志</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="mcsPlcVariable/adds">
+                                                <i class="layui-icon layui-icon-ok-circle"></i>
+                                                <cite>PLC配置添加</cite>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  快捷方式 - LED  -->
+                <div class="layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">快捷方式 - LED</div>
+                        <div class="layui-card-body">
+                            <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="ledConnect/adds">
+                                                <i class="layui-icon layui-icon-add-1"></i>
+                                                <cite>LED连接添加</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="ledConnect/">
+                                                <i class="layui-icon layui-icon-chart"></i>
+                                                <cite>LED连接管理</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="ledDisplay/add">
+                                                <i class="layui-icon layui-icon-add-circle"></i>
+                                                <cite>LED配置添加</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="ledDisplay/">
+                                                <i class="layui-icon layui-icon-template-1"></i>
+                                                <cite>LED配置信息管理</cite>
+                                            </a>
+                                        </li>
+                                    </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--今日作业任务概览-->
+                <div class="layui-col-sm12 layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            今日作业任务概览
+                            <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
+                        </div>
+                        <div class="layui-card-body">
+                            <div id="overview" lay-filter="overview" style="width: 100%;height:280px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="../../layuiadmin/layui/layui.js"></script>
+
+<script src="../../js/echarts.js"></script>
+
+<script>
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use('index');
+
+    // $(function () {
+    //     setInterval(freshData, 3*1000);
+    // })
+
+    freshData();
+
+    //发送请求，反馈实时数据
+    function freshData() {
+
+        var order = echarts.init(document.getElementById('overview'));
+
+        //今日作业任务概览
+        var optionOrder = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['入库任务', '出库任务', '搬运任务']
+            },
+            grid: {
+                bottom: '10%',
+                top: '20%'
+            },
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                name: '时',
+                data: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '个'
+            }],
+            series: [
+                {
+                    name: '入库任务',
+                    type: 'line',
+                    data: [
+                        200,
+                        200,
+                        200,
+                        200,
+                        200,
+                        200,
+                        200,
+                        200,
+                        200,
+                        200,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100
+                    ]
+                },
+                {
+                    name: '出库任务',
+                    type: 'line',
+                    data: [
+                        300,
+                        300,
+                        300,
+                        300,
+                        300,
+                        300,
+                        300,
+                        300,
+                        300,
+                        300,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400,
+                        400
+                    ]
+                },
+                {
+                    name: '搬运任务',
+                    type: 'line',
+                    data: [
+                        500,
+                        500,
+                        500,
+                        500,
+                        500,
+                        500,
+                        500,
+                        500,
+                        500,
+                        500,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600,
+                        600
+                    ]
+                }
+            ]
+        };
+        order.setOption(optionOrder);
+
+        //使echarts自适应高度与宽度
+        window.onresize = function () {
+            order.resize();
+        };
+
+    }
+
+</script>
+
+</body>
+</html>
+

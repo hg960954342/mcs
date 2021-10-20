@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head th:include="commons/common::head">
+</head>
+<script src="/webjars" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header" th:text="${ledDisplayInfo==null}?'添加LED显示信息':'更改LED显示信息'"></div>
+                <div class="layui-card-body" pad15>
+                    <input type="hidden" id="_method" value="" th:value="${ledDisplayInfo==null}?'post':'put'">
+                    <div class="layui-form" lay-filter="ledDisplay">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">编号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="id" value="" th:readonly="${ledDisplayInfo!=null}"
+                                       th:value="${ledDisplayInfo!=null}?${ledDisplayInfo.getId()}" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux" th:text="${ledDisplayInfo==null}?'':'不可修改'"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">显示内容</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="content" value="" th:value="${ledDisplayInfo!=null}?${ledDisplayInfo.getContent()}"
+                                       lay-verify="required" autocomplete="off" placeholder="请输入显示内容" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">显示格式</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="displayFormat" value=""
+                                       th:value="${ledDisplayInfo!=null}?${ledDisplayInfo.getDisplayFormat()}"
+                                       autocomplete="off" placeholder="请输入显示格式" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-inline">
+                                <select name="status" >
+                                    <option  value="1" th:selcted="${ledDisplayInfo!=null}?${ledDisplayInfo.getStatus()}">未显示</option>
+                                    <option value="2" th:selected="${ledDisplayInfo!=null}?${ledDisplayInfo.getStatus()}">已显示</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">创建时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="createTime" value="" th:value="${ledDisplayInfo!=null}?${ledDisplayInfo.getCreateTime()}"
+                                       autocomplete="off" placeholder="请输入创建时间" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">更新时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="updateTime" value="" th:value="${ledDisplayInfo!=null}?${ledDisplayInfo.getUpdateTime()}"
+                                       autocomplete="off" placeholder="请输入更新时间" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="setmyinfo" th:text="${ledDisplayInfo==null}?'确认添加':'确认修改'">确认修改
+                                </button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , form = layui.form;
+        form.render(null, 'ledDisplay-form');
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(setmyinfo)', function (data) {
+            $.ajax({
+                url: '/ledDisplay/',
+                type: $('#_method').val(),
+                data: data.field,
+                success: function (data) {
+                    layer.alert(data, {icon: 6});
+                },
+                error: function (err) {	//失败回调函数
+                    layer.alert(err, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

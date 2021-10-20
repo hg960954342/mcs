@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head th:include="commons/common::head">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header" th:text="${UserInfo==null}?'添加新用户':'设置我的资料'"></div>
+                <div class="layui-card-body" pad15>
+                    <input type="hidden" id="_method" value="" th:value="${UserInfo==null}?'post':'put'">
+                    <div class="layui-form" lay-filter="userinfo-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">我的角色</label>
+                            <div class="layui-input-inline">
+                                <select name="uRole" lay-verify="">
+                                    <option value="超级管理员" th:if="${UserInfo!=null && UserInfo.getId()=='admin'}">
+                                        超级管理员
+                                    </option>
+                                    <option value="管理员" th:selected="${UserInfo!=null}?${UserInfo.getRole()=='管理员'}">
+                                        管理员
+                                    </option>
+                                    <option value="普通用户" th:selected="${UserInfo!=null}?${UserInfo.getRole()=='普通用户'}">
+                                        普通用户
+                                    </option>
+                                    <option value="监控用户" th:selected="${UserInfo!=null}?${UserInfo.getRole()=='监控用户'}">
+                                        监控用户
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">帐号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="id" value="" th:value="${UserInfo!=null}?${UserInfo.getId()}"
+                                       th:readonly="${UserInfo!=null}" class="layui-input" placeholder="请输入登录帐号">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux"
+                                 th:text="${UserInfo==null}?'':'不可修改。一般用于后台登入'"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="userName" value=""
+                                       th:value="${UserInfo!=null}?${UserInfo.getUserName()}" lay-verify="nickname"
+                                       autocomplete="off" placeholder="请输入昵称" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="sex" value="男" title="男"
+                                       th:checked="${UserInfo!=null}?${UserInfo.getSex()=='男'}">
+                                <input type="radio" name="uSex" value="女" title="女"
+                                       th:checked="${UserInfo!=null}?${UserInfo.getSex()=='女'}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">手机</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="telephone" value=""
+                                       th:value="${UserInfo!=null}?${UserInfo.getTelephone()}" lay-verify="phone"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="mail" value=""
+                                       th:value="${UserInfo!=null}?${UserInfo.getMail()}" lay-verify="email"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">备注</label>
+                            <div class="layui-input-block">
+                                <textarea name="remark" placeholder="请输入内容" class="layui-textarea"
+                                          th:text="${UserInfo!=null}?${UserInfo.getRemark()}"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="setmyinfo"
+                                        th:text="${UserInfo==null}?'确认添加':'确认修改'">确认修改
+                                </button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , form = layui.form;
+
+        form.render(null, 'userinfo-form');
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(setmyinfo)', function (data) {
+            $.ajax({
+                url: "/users/",
+                data: data.field,
+                type: $('#_method').val(),
+                success: function (data) {
+                    layer.alert(data, {icon: 6});
+                },
+                error: function (err) {	//失败回调函数
+                    layer.alert(err, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

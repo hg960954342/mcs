@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_PATH" value="/home/logs/mcs/"/>
+
+    <appender name="CONSOLE-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <!--<encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n</Pattern>
+        </encoder>-->
+        <target>System.out</target>
+        <encoder>
+            <pattern>%d %p %C:%L - %m%n</pattern>
+            <!--<charset>utf-8</charset>-->
+        </encoder>
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>-->
+    </appender>
+    <appender name="mcs-equip-info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 滚动日志文件保存格式 -->
+            <FileNamePattern>${LOG_PATH}/%d{yyyy,aux}/%d{MM,aux}/%d{dd,aux}/mcs.equip.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxFileSize>30MB</MaxFileSize>
+            <totalSizeCap>15GB</totalSizeCap>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="mcs-equipEro-info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 滚动日志文件保存格式 -->
+            <FileNamePattern>${LOG_PATH}/%d{yyyy,aux}/%d{MM,aux}/%d{dd,aux}/mcs.equip-error.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxFileSize>30MB</MaxFileSize>
+            <totalSizeCap>5GB</totalSizeCap>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+    <appender name="mcs-logic-info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 滚动日志文件保存格式 -->
+            <FileNamePattern>${LOG_PATH}/%d{yyyy,aux}/%d{MM,aux}/%d{dd,aux}/mcs.control.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxFileSize>30MB</MaxFileSize>
+            <totalSizeCap>5GB</totalSizeCap>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="mcs-logicEro-info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 滚动日志文件保存格式 -->
+            <FileNamePattern>${LOG_PATH}/%d{yyyy,aux}/%d{MM,aux}/%d{dd,aux}/mcs.control-error.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxFileSize>30MB</MaxFileSize>
+            <totalSizeCap>5GB</totalSizeCap>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="com.intplog.mcs.Transmission.TransmissionDriver" level="INFO" additivity="false">
+        <appender-ref ref="mcs-equip-info"/>
+        <appender-ref ref="mcs-equipEro-info"/>
+        <appender-ref ref="CONSOLE-APPENDER"/>
+    </logger>
+    <logger name="com.intplog.mcs.Transmission.TransmissionConnection" level="INFO" additivity="false">
+        <appender-ref ref="mcs-equip-info"/>
+        <appender-ref ref="mcs-equipEro-info"/>
+        <appender-ref ref="CONSOLE-APPENDER"/>
+    </logger>
+    <logger name="com.intplog.mcs.Transmission.TransmissionControl" level="INFO" additivity="false">
+        <appender-ref ref="mcs-logic-info"/>
+        <appender-ref ref="mcs-logicEro-info"/>
+        <appender-ref ref="CONSOLE-APPENDER"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="mcs-equip-info"/>
+        <appender-ref ref="CONSOLE-APPENDER"/>
+    </root>
+</configuration>

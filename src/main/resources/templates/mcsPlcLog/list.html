@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head th:include="commons/common::head">
+</head>
+<script src="/webjars" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">McsPlc日志</div>
+                <div class="layui-card-body">
+                    <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+                        创建时间：
+                        <div class="layui-inline" style="padding-right: 10px">
+                            <input class="layui-input" name="createTime" id="AlarmCtime" autocomplete="off">
+                        </div>
+                        条码：
+                        <div class="layui-inline" style="padding-right: 10px">
+                            <input class="layui-input" name="boxNum" id="BoxNum" autocomplete="off">
+                        </div>
+                        任务号：
+                        <div class="layui-inline" style="padding-right: 10px">
+                            <input class="layui-input" name="taskId" id="TaskId" autocomplete="off">
+                        </div>
+                        <button class="layui-btn" data-type="reload">搜索</button>
+                        <button class="layui-btn" data-type="export">导出</button>
+                        <!--<button class="layui-btn" data-type="export">导出</button>-->
+                    </div>
+                    <div th:include="commons/common::data-table-admin"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../layuiadmin/layui/layui.js"></script>
+<script type="text/javascript" th:inline="none">
+
+    function getWhere() {
+        var data = {
+            createTime: $("#AlarmCtime").val(),
+            boxNum: $("#BoxNum").val(),
+            taskId: $("#TaskId").val()
+        };
+        return data;
+    }
+
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function () {
+        var table = layui.table;
+
+        table.render({
+            id: 'StationReload'
+            , elem: '#data-table'
+            , url: '/mcsPlcLog/data'
+            , where: getWhere()
+            , cols: [[
+                {field: 'id', title: '主键', sort: true}
+                , {field: 'taskId', title: '任务编号', sort: true}
+                , {field: 'createTime', title: '创建时间', sort: true}
+                , {field: 'type', title: '任务类型', sort: true}
+                , {field: 'rpTime', title: '响应时间', sort: true}
+                , {field: 'content', title: '内容', sort: true}
+                , {field: 'boxNum', title: '箱号', sort: true}
+
+            ]]
+            //,skin: 'line' //表格风格
+            , even: true
+            , page: true //是否显示分页
+            , limits: [10, 20]
+            , limit: 10 //每页默认显示的数量
+        });
+
+        var $ = layui.$, active = {
+            reload: function () {
+
+                table.reload('StationReload', {
+                    where: getWhere()
+                });
+            },
+            export: function () {  //导出方法名
+                window.open('/mcsPlcLog/export?' + parseParam(getWhere()));
+            }
+        };
+
+        //json转url参数
+        var parseParam = function (param, key) {
+            var paramStr = "";
+            if (param instanceof String || param instanceof Number || param instanceof Boolean) {
+                paramStr += "&" + key + "=" + encodeURIComponent(param);
+            } else {
+                $.each(param, function (i) {
+                    var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
+                    paramStr += '&' + parseParam(this, k);
+                });
+            }
+            return paramStr.substr(1);
+        };
+
+
+        $('.test-table-reload-btn .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : null;
+        });
+
+    });
+</script>
+</body>
+</html>

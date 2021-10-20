@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head th:include="commons/common::head">
+</head>
+<script src="/webjars" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">LED连接管理</div>
+                <div class="layui-card-body">
+                    <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+                        编号：
+                        <div class="layui-inline" style="padding-right: 20px;">
+                            <input class="layui-input" name="id" id="ledConId" autocomplete="off">
+                        </div>
+                        名称：
+                        <div class="layui-inline" style="padding-right: 10px">
+                            <input class="layui-input" name="name" id="ledConName" autocomplete="off">
+                        </div>
+                        <button class="layui-btn" data-type="reload">搜索</button>
+                        <button class="layui-btn" data-type="export">导出</button>
+                        <button class="layui-btn" id="selFile">选择对应Excel模版</button>
+                        <button class="layui-btn" id="importFile">导入</button>
+                    </div>
+                    <div th:include="commons/common::data-table-admin"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../layuiadmin/layui/layui.js"></script>
+<script type="text/javascript" th:inline="none">
+
+    function getWhere() {
+        var data = {
+            id: $("#ledConId").val(),
+            name: $("#ledConName").val()
+        };
+        return data;
+    }
+
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function () {
+        var table = layui.table;
+
+        table.render({
+            id: 'ledConnectReload'
+            , elem: '#data-table'
+            , url: '/ledConnect/Data'
+            , where: getWhere()
+            , cols: [[
+                {field: 'id', title: '编号', sort: true}
+                , {field: 'name', title: '名称', sort: true}
+                , {field: 'ip', title: 'IP地址', sort: true}
+                , {field: 'port', title: '端口号', sort: true}
+                , {field: 'remark', title: '备注', sort: true}
+                , {width: 120, align: 'center', fixed: 'right', toolbar: '#table-operate'}
+            ]]
+            //,skin: 'line' //表格风格
+            , even: true
+            , page: true //是否显示分页
+            , limits: [10, 20]
+            , limit: 10 //每页默认显示的数量
+        });
+
+
+        var $ = layui.$, active = {
+            reload: function () {
+
+                table.reload('ledConnectReload', {
+                    where: getWhere()
+                });
+            },
+            export: function () {  //导出方法名
+                window.open('/ledConnect/export?'+parseParam(getWhere()));
+            }
+        };
+
+        //json转url参数
+        var parseParam = function(param, key) {
+            var paramStr = "";
+            if (param instanceof String || param instanceof Number || param instanceof Boolean) {
+                paramStr += "&" + key + "=" + encodeURIComponent(param);
+            } else {
+                $.each(param, function(i) {
+                    var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
+                    paramStr += '&' + parseParam(this, k);
+                });
+            }
+            return paramStr.substr(1);
+        };
+
+
+        $('.test-table-reload-btn .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : null;
+        });
+
+
+        //监听工具条
+        table.on('tool(data-table)', function (obj) {
+            var id = obj.data.id;
+            var url = '/ledConnect/';
+
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    var admin = layui.admin;
+                    admin.req({
+                        type: 'DELETE',
+                        url: url + id,
+                        success: function (data) {
+                            var msg = data.msg;
+                            if (msg != "")
+                                layer.alert(msg);
+                            else {
+                                obj.del();
+                                layer.close(index);
+                            }
+                        }
+                    });
+                });
+            } else if (obj.event === 'edit') {
+                layer.open({
+                    title: '编辑数据'
+                    , type: 2
+                    , content: url + 'Edit/' + id
+                    , shadeClose: true
+                    , area: layui.admin.screen() < 2 ? ['100%', '80%'] : ['600px', '500px']
+                    , maxmin: true
+                    , end: function () {
+                        table.reload("ledConnectReload");
+                    }
+                });
+            }
+        });
+
+        //文件上传
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                ,upload = layui.upload;
+
+            //指定允许上传的文件类型
+            upload.render({
+                elem: '#selFile'
+                ,url: '/ledConnect/import'
+                ,auto: false
+                ,bindAction: '#importFile'
+                //普通文件
+                ,accept: 'file'
+                //只接受xls和xlsx文件
+                ,acceptMime: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                //只上传xls或者xlsx的文件
+                ,exts:'xls|xlsx'
+                //最大文件上传大小KB
+                ,size:2048
+                //返回值接收
+                ,done: function (res) {
+                    if(res=="1"){
+                        layer.msg('导入成功！', {
+                        }, function(){
+                            //重新加载当前table
+                            table.reload("ledConnectReload");
+                        });
+                    }else{
+                        layer.msg('导入失败！', {
+                        }, function(){
+                            table.reload("ledConnectReload");
+                        });
+                    }
+                },
+            });
+
+        });
+
+    });
+
+</script>
+</body>
+</html>

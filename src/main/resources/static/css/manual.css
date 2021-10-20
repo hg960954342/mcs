@@ -1,0 +1,209 @@
+/*面板背景颜色*/
+#LAY-component-grid-rmsAuto {
+    background-color: #f2f2f2;
+}
+
+/*模块头部小图标*/
+#LAY-component-grid-rmsAuto .layui-icon {
+    position: unset;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/*每个模块框悬停效果*/
+#LAY-component-grid-rmsAuto .layui-anim .lineTop {
+    position: absolute;
+    width: 100%;
+    left: -10%;
+    height: 10%;
+    background-color: #20222A;
+    opacity: 0;
+}
+
+#LAY-component-grid-rmsAuto .layui-anim:hover .lineTop {
+    opacity: 1;
+    left: 0;
+    transition: all .5s;
+    -webkit-transition: all .5s;
+
+}
+
+#LAY-component-grid-rmsAuto .layui-card-body {
+    height: 150px;
+}
+
+#LAY-component-grid-rmsAuto .bodyH200 {
+    height: 200px;
+}
+
+#LAY-component-grid-rmsAuto .bodyH120 {
+    height: 120px;
+}
+
+#LAY-component-grid-rmsAuto .bodyPad {
+    padding: 20px 20px 0 0;
+}
+
+/*移动路径*/
+#LAY-component-grid-rmsAuto .divFixed {
+    /*position: sticky;*/
+    /*top: 0;*/
+    /*z-index: 1;*/
+}
+
+#LAY-component-grid-rmsAuto .layui-btn.layui-btn-danger {
+    /*background-color: #F44336 ;*/
+    /*background-color: #e00500;*/
+    background-color: #f47a55;
+}
+
+#LAY-component-grid-rmsAuto .layui-btn.layui-btn-success {
+    /*background-color: #008500 ;*/
+    /*background-color: #397e30;*/
+    /*background-color: #397e30;*/
+    background-color: rgb(95, 184, 120);
+}
+
+/*AGV信息*/
+#LAY-component-grid-rmsAuto .clear {
+    /*background-color: #F74C31;*/
+    background-color: #Fc0000;
+    position: absolute;
+    right: 8%;
+    top: 5%;
+}
+
+/*动态渲染小车编号下拉框数据被遮挡*/
+#LAY-component-grid-rmsAuto .zindex {
+    z-index: 1;
+}
+
+/*AGV状态信息*/
+#LAY-component-grid-rmsAuto ul {
+    padding: 10px;
+    min-width: 500px;
+}
+
+#LAY-component-grid-rmsAuto ul li {
+    float: left;
+}
+
+#LAY-component-grid-rmsAuto ul li .info-item {
+    margin-right: 20px;
+    min-height: 45px;
+}
+
+#LAY-component-grid-rmsAuto ul li .info-item .agv-item {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+}
+
+#LAY-component-grid-rmsAuto ul li .info-item .agv-info {
+    display: inline-block;
+    width: 100px;
+    text-align: left;
+}
+
+/*移动路径*/
+#LAY-component-grid-rmsAuto .moveInfo {
+    height: 150px;
+    white-space: normal;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+/*交通管制、原地升降、校准*/
+#LAY-component-grid-rmsAuto .btnMid {
+    line-height: 100px;
+    left: 7%;
+}
+
+#LAY-component-grid-rmsAuto .btnBox {
+    height: 100px;
+}
+
+/*小车方向*/
+#LAY-component-grid-rmsAuto .rowTop {
+    height: 20px;
+    padding: 5px 0 25px 60px;
+}
+
+/*移动*/
+/*当前坐标输入框宽度*/
+#LAY-component-grid-rmsAuto .iptMove {
+    display: inline-block;
+    width: 25%;
+    margin: 0 20px 0 10px;
+}
+
+/*开始按钮定位*/
+#LAY-component-grid-rmsAuto .btnPo {
+    position: absolute;
+    bottom: 40%;
+    right: 3%;
+}
+
+/*充电*/
+#LAY-component-grid-rmsAuto .iptCharge {
+    display: inline-block;
+    width: 25%;
+    margin: 0 20px 0 10px;
+}
+
+#LAY-component-grid-rmsAuto .startCharge {
+    position: absolute;
+    right: 3%;
+    top: 15%;
+}
+
+#LAY-component-grid-rmsAuto .stopCharge {
+    position: absolute;
+    right: 3%;
+    bottom: 21%;
+}
+
+/*搬运(货架)*/
+#LAY-component-grid-rmsAuto .iptCarry {
+    display: inline-block;
+    width: 35%;
+    margin: 0 20px 0 10px;
+}
+#LAY-component-grid-rmsAuto .exchange{
+    min-height: 20px;
+}
+
+#LAY-component-grid-rmsAuto .layui-extend-exchange {
+    position: absolute;
+    right: 45%;
+    cursor: pointer;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+#LAY-component-grid-rmsAuto .btnCarry {
+    position: absolute;
+    right: 1%;
+    top: 53%;
+}
+
+/*盘点货架编号*/
+#LAY-component-grid-rmsAuto .iptCheck {
+    display: inline-block;
+    width: 35%;
+    margin: 0 20px 0 10px;
+}
+
+#LAY-component-grid-rmsAuto .itemH38 {
+    height: 38px;
+}
+
+#LAY-component-grid-rmsAuto .btnCheck {
+    position: absolute;
+    right: 1%;
+}
+
+/*radio位置右移*/
+#LAY-component-grid-rmsAuto .radioLeft {
+    margin-left: 20%;
+}
